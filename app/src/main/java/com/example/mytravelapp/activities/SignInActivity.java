@@ -24,9 +24,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         preferenceManager = new PreferenceManager(getApplicationContext());
         if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
+            navigateToAppropriateActivity();
         }
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -58,21 +56,39 @@ public class SignInActivity extends AppCompatActivity {
                         preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
                         preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
                         preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    }else {
+                        preferenceManager.putString(Constants.KEY_USER_EMAIL, documentSnapshot.getString(Constants.KEY_EMAIL));
+                        preferenceManager.putString(Constants.KEY_ACCOUNT_TYPE, documentSnapshot.getString(Constants.KEY_ACCOUNT_TYPE));
+                        navigateToAppropriateActivity();
+                    } else {
                         loading(false);
                         showToast("Unable to sign in");
                     }
                 });
     }
 
+    private void navigateToAppropriateActivity() {
+        String accountType = preferenceManager.getString(Constants.KEY_ACCOUNT_TYPE);
+        Intent intent;
+        if ("Tourist".equals(accountType)) {
+            intent = new Intent(getApplicationContext(), TouristMainActivity.class);
+        } else if ("Local/TouristGuide".equals(accountType)) {
+            intent = new Intent(getApplicationContext(), GuideMainActivity.class);
+        } else if ("admin".equals(accountType)) {
+            intent = new Intent(getApplicationContext(), AdminMainActivity.class);
+        } else {
+            showToast("Unknown account type");
+            return;
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     private void loading(Boolean isLoading) {
         if (isLoading) {
             binding.buttonSignIn.setVisibility(View.INVISIBLE);
             binding.progressBar.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             binding.progressBar.setVisibility(View.INVISIBLE);
             binding.buttonSignIn.setVisibility(View.VISIBLE);
         }
@@ -86,14 +102,16 @@ public class SignInActivity extends AppCompatActivity {
         if (binding.inputEmail.getText().toString().trim().isEmpty()) {
             showToast("Enter email");
             return false;
-        }else if (!Patterns.EMAIL_ADDRESS.matcher(binding.inputEmail.getText().toString()).matches()) {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(binding.inputEmail.getText().toString()).matches()) {
             showToast("Enter valid email");
             return false;
-        }else if (binding.inputPassword.getText().toString().trim().isEmpty()) {
+        } else if (binding.inputPassword.getText().toString().trim().isEmpty()) {
             showToast("Enter password");
             return false;
-        }else {
+        } else {
             return true;
         }
     }
 }
+
+

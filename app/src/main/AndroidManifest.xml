@@ -25,12 +25,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDgQMdikGU2nZdcy4S_JhFSEFg8wemIddE" />
 
-        <!-- Maps -->
-        <activity
-            android:name=".GoogleMapsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_google_maps" />
-
         <!-- Messaging Function -->
         <activity
             android:name=".activities.ChatActivity"
@@ -51,7 +45,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.TouristMainActivity" />
+        <activity android:name=".activities.GuideMainActivity" />
+        <activity android:name=".activities.GuideProfileActivity" />
+        <activity android:name=".activities.MenuChat" />
+        <activity android:name=".activities.PlansActivity" />
+        <activity android:name=".activities.AddPlanActivity" />
 
         <service
             android:name=".firebase.MessagingService"
@@ -60,6 +59,59 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <!-- Itinerary Planner -->
+        <activity
+            android:name=".activities.Search"
+            android:theme="@style/Theme.AppCompat">
+        </activity>
+
+        <activity
+            android:name=".activities.Recommendation"
+            android:theme="@style/Theme.AppCompat">
+        </activity>
+
+        <activity
+            android:name=".activities.AccommodationDetails"
+            android:theme="@style/Theme.AppCompat">
+        </activity>
+
+        <activity
+            android:name=".activities.RestaurantDetails"
+            android:theme="@style/Theme.AppCompat">
+        </activity>
+
+        <activity
+            android:name=".activities.ThingsToDoDetails"
+            android:theme="@style/Theme.AppCompat">
+        </activity>
+
+        <activity
+            android:name=".activities.UserPlansActivity"
+            android:theme="@style/Theme.AppCompat">
+        </activity>
+
+        <activity
+            android:name=".activities.GuideMenuChat"
+            android:label="GuideMenuChat">
+        </activity>
+
+        <activity
+            android:name=".activities.AdminMainActivity">
+        </activity>
+
+        <activity
+            android:name=".activities.AddDestinationActivity">
+        </activity>
+
+        <activity
+            android:name=".activities.EditDestinationActivity">
+        </activity>
+
+        <activity
+            android:name=".activities.EditDestinationItemActivity">
+        </activity>
+
     </application>
 
 </manifest>

@@ -23,4 +23,14 @@ public class Constants {
     public static final String KEY_RECEIVER_IMAGE = "receiverImage";
     public static final String KEY_LAST_MESSAGE = "lastMessage";
     public static final String KEY_ACCOUNT_TYPE = "accountType";
+
+    public static final String KEY_COLLECTION_USER_PLANS = "user_plans";
+    public static final String KEY_USER_EMAIL = "user_email";
+    public static final String KEY_LOCATION = "location";
+    public static final String KEY_LANGUAGES = "languages";
+    public static final String KEY_COLLECTION_DESTINATIONS = "destinations";
+    public static final String KEY_IMAGE_URL = "image_url";
+    public static final String KEY_DESTINATION_NAME = "name";
 }
+
+

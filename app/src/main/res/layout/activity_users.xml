@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/select_user"
+        android:text="@string/find_local_tourist_guide"
         android:textColor="@color/white"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
@@ -34,13 +34,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/imageBack" />
 
+    <Spinner
+        android:id="@+id/spinnerLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        app:layout_constraintEnd_toStartOf="@id/spinnerLanguage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageBack"
+        android:entries="@array/location_array"
+        />
+
+    <Spinner
+        android:id="@+id/spinnerLanguage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/spinnerLocation"
+        app:layout_constraintTop_toBottomOf="@id/imageBack"
+        android:entries="@array/language_array"
+        />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_16sdp"
         android:background="@drawable/background_content_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageBack">
+        app:layout_constraintTop_toBottomOf="@id/spinnerLocation">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/usersRecyclerView"
@@ -72,6 +94,4 @@
             android:visibility="gone" />
 
     </FrameLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

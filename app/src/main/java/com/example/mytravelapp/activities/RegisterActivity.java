@@ -1,9 +1,5 @@
 package com.example.mytravelapp.activities;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,14 +9,18 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.mytravelapp.R;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.mytravelapp.databinding.ActivityRegisterBinding;
 import com.example.mytravelapp.utilities.Constants;
 import com.example.mytravelapp.utilities.PreferenceManager;
-
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -28,7 +28,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import android.widget.ArrayAdapter;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -77,7 +76,14 @@ public class RegisterActivity extends AppCompatActivity {
         user.put(Constants.KEY_EMAIL, binding.inputEmail.getText().toString());
         user.put(Constants.KEY_PASSWORD, binding.inputPassword.getText().toString());
         user.put(Constants.KEY_IMAGE, encodedImage);
-        user.put(Constants.KEY_ACCOUNT_TYPE, binding.accountTypeSpinner.getSelectedItem());
+        user.put(Constants.KEY_ACCOUNT_TYPE, binding.accountTypeSpinner.getSelectedItem().toString());
+
+        // Check if the selected account type is "Local/TouristGuide"
+        if (binding.accountTypeSpinner.getSelectedItem().toString().equals("Local/TouristGuide")) {
+            user.put(Constants.KEY_LOCATION, null);
+            user.put(Constants.KEY_LANGUAGES, null);
+        }
+
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .add(user)
                 .addOnSuccessListener(documentReference -> {
@@ -87,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
                     preferenceManager.putString(Constants.KEY_NAME, binding.inputName.getText().toString());
                     preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
                     preferenceManager.putString(Constants.KEY_ACCOUNT_TYPE, binding.accountTypeSpinner.getSelectedItem().toString());
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MenuChat.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 })

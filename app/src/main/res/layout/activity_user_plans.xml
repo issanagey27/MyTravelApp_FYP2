@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
+
+    <!-- Image at the top of the screen -->
+    <ImageView
+        android:id="@+id/imageViewPlan"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/placeholder_image"
+        android:contentDescription="@string/description"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Bottom gradient overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="800dp"
+        android:layout_alignBottom="@id/imageViewPlan"
+        android:background="@drawable/bottom_gradient"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewPlan" />
+
+    <!-- Back Button at the top left on the image -->
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_back"
+        android:contentDescription="@string/backbutton"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+    <!-- Settings Button at the top right on the image -->
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_settings"
+        android:contentDescription="@string/settings"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+    <!-- Name TextView at the bottom left of the image -->
+    <TextView
+        android:id="@+id/textViewPlanName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewPlan" />
+
+    <!-- Destination TextView below the Name TextView on the image -->
+    <TextView
+        android:id="@+id/textViewDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/destination"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewPlan"
+        app:layout_constraintStart_toEndOf="@id/locationSymbol" />
+
+    <ImageView
+        android:id="@+id/locationSymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/location_symbol"
+        android:src="@drawable/ic_location"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/textViewDestination"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- TabLayout for sections at the bottom of the screen -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple"
+        android:contentDescription="@string/filter"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/imageViewPlan" />
+
+    <!-- ViewPager2 for fragments below the image -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:contentDescription="@string/viewPager_description"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintBottom_toTopOf="@id/fabAdd" />
+
+    <!-- Floating Action Button at the bottom right -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/add_plan"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- EditText for editing plan name -->
+    <EditText
+        android:id="@+id/editTextPlanName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="plan_name_hint"
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="50dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewPlan" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

@@ -4,4 +4,53 @@
         <item>Tourist</item>
         <item>Local/TouristGuide</item>
     </string-array>
+
+    <string-array name="filter_types">
+        <item>All</item>
+        <item>Sightseeing</item>
+        <item>Outdoor Activities</item>
+        <item>Museums</item>
+        <item>Shopping</item>
+        <item>Nightlife</item>
+        <item>Family-Friendly</item>
+        <item>Wellness and Spa</item>
+    </string-array>
+
+    <string-array name="filter_cuisine">
+        <item>All</item>
+        <item>Chinese</item>
+        <item>Indian</item>
+        <item>Malay</item>
+        <item>Portuguese</item>
+        <item>Fusion</item>
+        <item>Nyonya</item>
+    </string-array>
+
+    <string-array name="filter_acmTypes">
+        <item>All</item>
+        <item>Hotel</item>
+        <item>Resort</item>
+        <item>Guest House</item>
+        <item>Homestay</item>
+        <item>Boutique</item>
+    </string-array>
+
+    <string-array name="location_array">
+        <item>All</item>
+        <item>Melaka</item>
+        <item>Sabah</item>
+        <item>Pulau Langkawi</item>
+        <!-- Add more locations as needed -->
+    </string-array>
+
+    <string-array name="language_array">
+        <item>All</item>
+        <item>English</item>
+        <item>Chinese</item>
+        <item>Malay</item>
+        <item>Spanish</item>
+        <item>German</item>
+        <item>French</item>
+        <!-- Add more languages as needed -->
+    </string-array>
 </resources>

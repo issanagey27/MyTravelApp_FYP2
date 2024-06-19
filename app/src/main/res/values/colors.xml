@@ -8,5 +8,12 @@
     <color name="input_background">#ECECEC</color>
     <color name="icon_background">#20FFFFFF</color>
     <color name="error">#B00020</color>
+    <color name="red">#B00020</color>
+    <color name="dark_red">#3C010C</color>
     <color name="received_message_background">#090D16</color>
+    <color name="purple">#6A0DAD</color>
+    <color name="gold">#FFD700</color>
+    <color name="black">#000000</color>
+    <color name ="gray">#353434</color>
+    <color name="green">#1A6512</color>
 </resources>
