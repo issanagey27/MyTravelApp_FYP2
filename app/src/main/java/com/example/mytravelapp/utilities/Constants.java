@@ -31,6 +31,15 @@ public class Constants {
     public static final String KEY_COLLECTION_DESTINATIONS = "destinations";
     public static final String KEY_IMAGE_URL = "image_url";
     public static final String KEY_DESTINATION_NAME = "name";
+    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_ADDRESS = "address";
+    public static final String KEY_PRICE = "price";
+    public static final String KEY_AMENITIES = "amenities";
+    public static final String KEY_REVIEW = "review";
+    public static final String KEY_TYPE = "type";
+    public static final String KEY_CUISINE = "cuisine";
+    public static final String KEY_DOCUMENT_ID = "id";
+    public static final String KEY_SUBCOLLECTION_NAME = "sub_name";
 }
 
 

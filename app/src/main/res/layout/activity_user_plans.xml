@@ -131,7 +131,7 @@
         android:id="@+id/editTextPlanName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="plan_name_hint"
+        android:hint="@string/edit_plan_name"
         android:textColor="@android:color/white"
         android:textSize="48sp"
         android:textStyle="bold"

@@ -103,6 +103,7 @@ public class UserPlansActivity extends AppCompatActivity {
             intent.putExtra("planName", planName);
             intent.putExtra("userEmail", userEmail);
             startActivity(intent);
+            finish();
         });
     }
 
@@ -160,10 +161,10 @@ public class UserPlansActivity extends AppCompatActivity {
             }
 
             // Close all activities and return to TouristMainActivity
-            Intent intent = new Intent(UserPlansActivity.this, TouristMainActivity.class);
+            Intent intent = new Intent(UserPlansActivity.this, UserPlansActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            finish(); // Optional: if you want to ensure the current activity is finished
+            finish();
         }
     }
 
@@ -309,7 +310,6 @@ public class UserPlansActivity extends AppCompatActivity {
             deleteCollection(subcollectionRef);
         }
 
-        // Update UI or finish activity as needed after all subcollections are deleted
         Toast.makeText(this, "Plan and its subcollections deleted successfully", Toast.LENGTH_SHORT).show();
         finish();
     }

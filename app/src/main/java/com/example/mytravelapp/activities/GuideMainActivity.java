@@ -48,15 +48,27 @@ public class GuideMainActivity extends AppCompatActivity {
     }
 
     private void loadUserDetails() {
-        binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
-        String encodedImage = preferenceManager.getString(Constants.KEY_IMAGE);
-        if (encodedImage != null && !encodedImage.isEmpty()) {
-            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            binding.imageProfile.setImageBitmap(bitmap);
-        } else {
-            binding.imageProfile.setImageResource(R.drawable.default_profile_image);
-        }
+        String userId = preferenceManager.getString(Constants.KEY_USER_ID);
+
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String name = documentSnapshot.getString(Constants.KEY_NAME);
+                        String image = documentSnapshot.getString(Constants.KEY_IMAGE);
+
+                        binding.textName.setText(name);
+                        if (image != null && !image.isEmpty()) {
+                            byte[] bytes = Base64.decode(image, Base64.DEFAULT);
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            binding.imageProfile.setImageBitmap(bitmap);
+                        } else {
+                            binding.imageProfile.setImageResource(R.drawable.default_profile_image);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> showToast("Failed to load user details"));
     }
 
     private void showToast(String message) {
@@ -93,5 +105,3 @@ public class GuideMainActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> showToast("Unable to sign out"));
     }
 }
-
-

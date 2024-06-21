@@ -2,14 +2,11 @@ package com.example.mytravelapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.mytravelapp.R;
 import com.example.mytravelapp.adapters.PlansAdapter;
 import com.example.mytravelapp.databinding.ActivityPlansBinding;
 import com.example.mytravelapp.models.Plans;
@@ -21,7 +18,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlansActivity extends AppCompatActivity {
+public class PlansActivity extends AppCompatActivity implements PlansAdapter.OnItemClickListener, PlansAdapter.OnDeleteClickListener {
 
     private ActivityPlansBinding binding;
     private FirebaseFirestore database;
@@ -45,27 +42,17 @@ public class PlansActivity extends AppCompatActivity {
         loadPlans();
         setListeners();
 
-        ImageButton backButton = findViewById(R.id.backButton);
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
+        // Back button
+        binding.backButton.setOnClickListener(v -> {
+            finish();
+            startActivity(new Intent(PlansActivity.this, TouristMainActivity.class));
         });
     }
 
     private void init() {
         database = FirebaseFirestore.getInstance();
         plansList = new ArrayList<>();
-        plansAdapter = new PlansAdapter(plansList, plan -> {
-            Intent intent = new Intent(PlansActivity.this, UserPlansActivity.class);
-            // Pass intent extras here
-            intent.putExtra("destinationId", plan.getDestination()); // Assuming you have a method to get destinationId from Plans class
-            intent.putExtra("planName", plan.getName()); // Assuming you have a method to get planName from Plans class
-            intent.putExtra("userEmail", userEmail); // Assuming userEmail is already defined in PlansActivity
-            startActivity(intent);
-        });
+        plansAdapter = new PlansAdapter(plansList, this, this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(plansAdapter);
     }
@@ -100,9 +87,75 @@ public class PlansActivity extends AppCompatActivity {
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onItemClick(Plans plan) {
+        Intent intent = new Intent(PlansActivity.this, UserPlansActivity.class);
+        intent.putExtra("destinationId", plan.getDestination());
+        intent.putExtra("planName", plan.getName());
+        intent.putExtra("userEmail", userEmail);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDeleteClick(Plans plan) {
+        String planName = plan.getName(); // Get the name of the plan
+
+        // Delete the plan document and its subcollections
+        database.collection(Constants.KEY_COLLECTION_USER_PLANS)
+                .document(userEmail)
+                .collection("plans")
+                .whereEqualTo("name", planName) // Assuming "name" is the field in the document that stores the plan name
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String planId = document.getId(); // Get the document ID (plan ID)
+                            deletePlanAndSubcollections(planId);
+                        }
+                    } else {
+                        showToast("Failed to find plan document: " + task.getException().getMessage());
+                    }
+                });
+    }
+
+    private void deletePlanAndSubcollections(String planId) {
+        // Delete the plan document
+        database.collection(Constants.KEY_COLLECTION_USER_PLANS)
+                .document(userEmail)
+                .collection("plans")
+                .document(planId)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    // Document successfully deleted, now delete subcollections
+                    deleteSubcollections(planId);
+                    // Show toast indicating deletion success
+                    showToast("Item deleted successfully.");
+                    // Finish current activity and reopen it
+                    finish();
+                    startActivity(getIntent());
+                })
+                .addOnFailureListener(e -> {
+                    showToast("Failed to delete plan: " + e.getMessage());
+                });
+    }
+
+    private void deleteSubcollections(String planId) {
+        // Delete all documents in the subcollection
+        database.collection(Constants.KEY_COLLECTION_USER_PLANS)
+                .document(userEmail)
+                .collection("plans")
+                .document(planId)
+                .collection("subcollectionName") // Replace with your subcollection name if any
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            document.getReference().delete();
+                        }
+                    } else {
+                        showToast("Failed to delete subcollections: " + task.getException().getMessage());
+                    }
+                });
+    }
 }
-
-
-
-
-

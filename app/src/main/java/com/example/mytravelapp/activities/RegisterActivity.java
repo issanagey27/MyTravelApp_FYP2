@@ -45,12 +45,16 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setListener() {
-        binding.textSignIn.setOnClickListener(v -> onBackPressed());
+        binding.textSignIn.setOnClickListener(v -> {
+            navigateBackToSignIn();
+        });
+
         binding.buttonRegister.setOnClickListener(v -> {
             if (isValidRegisterDetails()) {
                 register();
             }
         });
+
         binding.layoutImage.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -62,6 +66,12 @@ public class RegisterActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, accountTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.accountTypeSpinner.setAdapter(adapter);
+    }
+
+    private void navigateBackToSignIn() {
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivity(intent);
+        finish(); //
     }
 
     private void showToast(String message) {
@@ -76,10 +86,11 @@ public class RegisterActivity extends AppCompatActivity {
         user.put(Constants.KEY_EMAIL, binding.inputEmail.getText().toString());
         user.put(Constants.KEY_PASSWORD, binding.inputPassword.getText().toString());
         user.put(Constants.KEY_IMAGE, encodedImage);
-        user.put(Constants.KEY_ACCOUNT_TYPE, binding.accountTypeSpinner.getSelectedItem().toString());
+        String accountType = binding.accountTypeSpinner.getSelectedItem().toString();
+        user.put(Constants.KEY_ACCOUNT_TYPE, accountType);
 
         // Check if the selected account type is "Local/TouristGuide"
-        if (binding.accountTypeSpinner.getSelectedItem().toString().equals("Local/TouristGuide")) {
+        if (accountType.equals("Local/TouristGuide")) {
             user.put(Constants.KEY_LOCATION, null);
             user.put(Constants.KEY_LANGUAGES, null);
         }
@@ -92,8 +103,17 @@ public class RegisterActivity extends AppCompatActivity {
                     preferenceManager.putString(Constants.KEY_USER_ID, documentReference.getId());
                     preferenceManager.putString(Constants.KEY_NAME, binding.inputName.getText().toString());
                     preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
-                    preferenceManager.putString(Constants.KEY_ACCOUNT_TYPE, binding.accountTypeSpinner.getSelectedItem().toString());
-                    Intent intent = new Intent(getApplicationContext(), MenuChat.class);
+                    preferenceManager.putString(Constants.KEY_ACCOUNT_TYPE, accountType);
+
+                    // Determine which activity to start based on account type
+                    Class<?> mainActivityClass;
+                    if (accountType.equals("Tourist")) {
+                        mainActivityClass = TouristMainActivity.class;
+                    } else { // Default to GuideMainActivity for "Local/TouristGuide"
+                        mainActivityClass = GuideMainActivity.class;
+                    }
+
+                    Intent intent = new Intent(getApplicationContext(), mainActivityClass);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 })

@@ -44,13 +44,30 @@ public class TouristMainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), PlansActivity.class)));
         binding.buttonPage2.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), MenuChat.class)));
+        binding.buttonProfile.setOnClickListener(v ->
+                startActivity(new Intent(getApplicationContext(), TouristProfileActivity.class)));
     }
 
     private void loadUserDetails() {
-        binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
-        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        binding.imageProfile.setImageBitmap(bitmap);
+        String userId = preferenceManager.getString(Constants.KEY_USER_ID);
+
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String name = documentSnapshot.getString(Constants.KEY_NAME);
+                        String image = documentSnapshot.getString(Constants.KEY_IMAGE);
+
+                        binding.textName.setText(name);
+                        if (image != null && !image.isEmpty()) {
+                            byte[] bytes = Base64.decode(image, Base64.DEFAULT);
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            binding.imageProfile.setImageBitmap(bitmap);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> showToast("Failed to load user details"));
     }
 
     private void showToast(String message) {
@@ -87,5 +104,3 @@ public class TouristMainActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> showToast("Unable to sign out"));
     }
 }
-
-

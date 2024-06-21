@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,14 +21,20 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansViewHol
 
     private final List<Plans> plansList;
     private final OnItemClickListener listener;
+    private final OnDeleteClickListener deleteListener;
 
     public interface OnItemClickListener {
         void onItemClick(Plans plan);
     }
 
-    public PlansAdapter(List<Plans> plansList, OnItemClickListener listener) {
+    public interface OnDeleteClickListener {
+        void onDeleteClick(Plans plan);
+    }
+
+    public PlansAdapter(List<Plans> plansList, OnItemClickListener listener, OnDeleteClickListener deleteListener) {
         this.plansList = plansList;
         this.listener = listener;
+        this.deleteListener = deleteListener;
     }
 
     @NonNull
@@ -42,7 +49,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansViewHol
 
     @Override
     public void onBindViewHolder(@NonNull PlansViewHolder holder, int position) {
-        holder.bind(plansList.get(position), listener);
+        holder.bind(plansList.get(position), listener, deleteListener);
     }
 
     @Override
@@ -54,14 +61,16 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansViewHol
 
         private final ImageView imageItem;
         private final TextView textName;
+        private final Button deleteButton;
 
         PlansViewHolder(@NonNull View itemView) {
             super(itemView);
             imageItem = itemView.findViewById(R.id.imageItem);
             textName = itemView.findViewById(R.id.textName);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
 
-        void bind(final Plans plan, final OnItemClickListener listener) {
+        void bind(final Plans plan, final OnItemClickListener listener, final OnDeleteClickListener deleteListener) {
             textName.setText(plan.getName());
             String imageUrl = plan.getImageUrl();
             if (imageUrl != null && !imageUrl.isEmpty()) {
@@ -72,11 +81,10 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansViewHol
             } else {
                 imageItem.setImageResource(R.drawable.placeholder_image);
             }
+
             itemView.setOnClickListener(v -> listener.onItemClick(plan));
+
+            deleteButton.setOnClickListener(v -> deleteListener.onDeleteClick(plan)); // Ensure this line is correctly wired
         }
     }
 }
-
-
-
-

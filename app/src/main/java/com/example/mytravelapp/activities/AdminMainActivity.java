@@ -54,12 +54,12 @@ public class AdminMainActivity extends AppCompatActivity {
         binding.imageSignOut.setOnClickListener(v -> signOut());
         binding.buttonAddDestination.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), AddDestinationActivity.class)));
-//        binding.buttonAddLocation.setOnClickListener(v ->
-//                startActivity(new Intent(getApplicationContext(), AddLocationActivity.class)));
+        binding.buttonAddLocation.setOnClickListener(v ->
+                startActivity(new Intent(getApplicationContext(), AddLocationActivity.class)));
         binding.buttonEditDestination.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), EditDestinationActivity.class)));
-//        binding.buttonEditLocation.setOnClickListener(v ->
-//                startActivity(new Intent(getApplicationContext(), EditLocationActivity.class)));
+        binding.buttonEditLocation.setOnClickListener(v ->
+                startActivity(new Intent(getApplicationContext(), EditLocationActivity.class)));
     }
 
     private void showToast(String message) {

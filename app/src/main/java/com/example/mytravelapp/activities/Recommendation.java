@@ -1,5 +1,6 @@
 package com.example.mytravelapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
@@ -57,7 +58,11 @@ public class Recommendation extends AppCompatActivity {
                 (tab, position) -> tab.setText(tabTitles.get(position))
         ).attach();
 
-        // Set up back button to finish the activity when clicked
-        backButton.setOnClickListener(v -> finish());
+        // Set up back button to navigate to PlansActivity when clicked
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Recommendation.this, PlansActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 }

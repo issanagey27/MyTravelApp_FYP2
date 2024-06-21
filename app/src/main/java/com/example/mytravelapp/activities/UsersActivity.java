@@ -115,14 +115,14 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
 
         List<User> filteredUsers = new ArrayList<>();
         for (User user : allUsers) {
-            boolean matchesLocation = selectedLocation.equals("All") || user.location.equals(selectedLocation);
+            boolean matchesLocation = selectedLocation.equals("All") || (user.location != null && user.location.equals(selectedLocation));
             boolean matchesLanguage = selectedLanguage.equals("All") || (user.languages != null && user.languages.contains(selectedLanguage));
             if (matchesLocation && matchesLanguage) {
                 filteredUsers.add(user);
             }
         }
 
-        if (filteredUsers.size() > 0) {
+        if (!filteredUsers.isEmpty()) {
             usersAdapter.updateUsers(filteredUsers);
             binding.usersRecyclerView.setVisibility(View.VISIBLE);
             binding.textErrorMessage.setVisibility(View.GONE);

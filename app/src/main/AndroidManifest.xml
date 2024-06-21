@@ -21,17 +21,11 @@
         android:theme="@style/Theme.MyTravelApp"
         tools:targetApi="31">
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDgQMdikGU2nZdcy4S_JhFSEFg8wemIddE" />
-
-        <!-- Messaging Function -->
         <activity
             android:name=".activities.ChatActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activities.UsersActivity" />
 
-        <!-- Login and Register -->
         <activity
             android:name=".activities.RegisterActivity"
             android:windowSoftInputMode="adjustResize" />
@@ -60,7 +54,6 @@
             </intent-filter>
         </service>
 
-        <!-- Itinerary Planner -->
         <activity
             android:name=".activities.Search"
             android:theme="@style/Theme.AppCompat">
@@ -111,6 +104,22 @@
         <activity
             android:name=".activities.EditDestinationItemActivity">
         </activity>
+
+        <activity
+            android:name=".activities.AddLocationActivity">
+        </activity>
+
+        <activity
+            android:name=".activities.AddLocationItemActivity">
+        </activity>
+
+        <activity android:name=".activities.EditLocationActivity" />
+
+        <activity android:name=".activities.EditLocationItemActivity" />
+
+        <activity android:name=".activities.EditLocationItemDetailsActivity" />
+
+        <activity android:name=".activities.TouristProfileActivity" />
 
     </application>
 

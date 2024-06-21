@@ -8,6 +8,7 @@
     android:overScrollMode="never"
     android:padding="@dimen/_24sdp"
     android:scrollbars="none"
+    android:background="@drawable/gradient_background"
     tools:context=".activities.SignInActivity">
 
     <LinearLayout
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
             android:text="@string/login_to_continue1"
-            android:textColor="@color/secondary_text"
+            android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
 
