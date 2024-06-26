@@ -46,7 +46,7 @@ public class AddLocationActivity extends AppCompatActivity {
 
                     for (DocumentSnapshot document : queryDocumentSnapshots) {
                         View destinationView = LayoutInflater.from(AddLocationActivity.this)
-                                .inflate(R.layout.item_destination, destinationListLayout, false);
+                                .inflate(R.layout.item_destination_no_delete, destinationListLayout, false);
 
                         TextView textViewDestinationName = destinationView.findViewById(R.id.textViewDestinationName);
                         ImageView imageViewDestination = destinationView.findViewById(R.id.imageViewDestination);

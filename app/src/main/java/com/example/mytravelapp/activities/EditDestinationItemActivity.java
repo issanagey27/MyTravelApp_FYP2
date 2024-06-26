@@ -1,5 +1,6 @@
 package com.example.mytravelapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -44,6 +45,11 @@ public class EditDestinationItemActivity extends AppCompatActivity {
         editTextImageUrl.setText(currentImageUrl);
 
         buttonUpdateDestination.setOnClickListener(v -> updateDestination());
+
+        findViewById(R.id.imageBack).setOnClickListener(v -> {
+            finish();
+            startActivity(new Intent(EditDestinationItemActivity.this, AdminMainActivity.class));
+        });
     }
 
     private void updateDestination() {
