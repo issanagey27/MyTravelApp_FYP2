@@ -158,13 +158,10 @@ public class UserPlansActivity extends AppCompatActivity {
             String newPlanName = editTextPlanName.getText().toString().trim();
             if (!newPlanName.isEmpty() && !newPlanName.equals(planName)) {
                 updatePlanName(newPlanName);
+            } else {
+                // No changes made, just reset the view
+                editTextPlanName.setText(planName);
             }
-
-            // Close all activities and return to TouristMainActivity
-            Intent intent = new Intent(UserPlansActivity.this, UserPlansActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
         }
     }
 
@@ -190,8 +187,15 @@ public class UserPlansActivity extends AppCompatActivity {
                                 deleteDocumentWithSubcollections(oldPlanRef, () -> {
                                     Toast.makeText(this, "Plan name updated successfully", Toast.LENGTH_SHORT).show();
                                     planName = newPlanName;
-                                    textViewPlanName.setText(newPlanName);
-                                    editTextPlanName.setText(newPlanName);
+
+                                    // Reload the activity with the new plan name
+                                    Intent intent = new Intent(UserPlansActivity.this, UserPlansActivity.class);
+                                    intent.putExtra("destinationId", destinationId);
+                                    intent.putExtra("planName", newPlanName);
+                                    intent.putExtra("userEmail", userEmail);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
                                 });
                             });
                         })
@@ -279,53 +283,4 @@ public class UserPlansActivity extends AppCompatActivity {
             }
         }).addOnFailureListener(e -> Log.e(TAG, "Error deleting subcollection", e));
     }
-
-    private void deletePlan() {
-        DocumentReference planRef = db.collection("user_plans")
-                .document(userEmail)
-                .collection("plans")
-                .document(planName);
-
-        planRef.delete()
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Plan deleted successfully", Toast.LENGTH_SHORT).show();
-                    deleteSubcollections();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error deleting plan: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Error deleting plan", e);
-                });
-    }
-
-    private void deleteSubcollections() {
-        String[] subcollectionNames = {"accommodations", "restaurants", "thingstodo"};
-
-        for (String subcollectionName : subcollectionNames) {
-            CollectionReference subcollectionRef = db.collection("user_plans")
-                    .document(userEmail)
-                    .collection("plans")
-                    .document(planName)
-                    .collection(subcollectionName);
-
-            deleteCollection(subcollectionRef);
-        }
-
-        Toast.makeText(this, "Plan and its subcollections deleted successfully", Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-    private void deleteCollection(CollectionReference collectionRef) {
-        collectionRef.get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        document.getReference().delete()
-                                .addOnSuccessListener(aVoid -> Log.d(TAG, "Document successfully deleted"))
-                                .addOnFailureListener(e -> Log.e(TAG, "Error deleting document", e));
-                    }
-                })
-                .addOnFailureListener(e -> Log.e(TAG, "Error deleting subcollection", e));
-    }
 }
-
-
-

@@ -49,6 +49,12 @@ public class PlansActivity extends AppCompatActivity implements PlansAdapter.OnI
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadPlans();
+    }
+
     private void init() {
         database = FirebaseFirestore.getInstance();
         plansList = new ArrayList<>();
@@ -58,7 +64,7 @@ public class PlansActivity extends AppCompatActivity implements PlansAdapter.OnI
     }
 
     private void loadPlans() {
-        String userEmail = preferenceManager.getString(Constants.KEY_USER_EMAIL);
+        userEmail = preferenceManager.getString(Constants.KEY_USER_EMAIL);
         database.collection(Constants.KEY_COLLECTION_USER_PLANS)
                 .document(userEmail)
                 .collection("plans")
@@ -142,20 +148,23 @@ public class PlansActivity extends AppCompatActivity implements PlansAdapter.OnI
 
     private void deleteSubcollections(String planId) {
         // Delete all documents in the subcollection
-        database.collection(Constants.KEY_COLLECTION_USER_PLANS)
-                .document(userEmail)
-                .collection("plans")
-                .document(planId)
-                .collection("subcollectionName") // Replace with your subcollection name if any
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            document.getReference().delete();
+        String[] subcollectionNames = {"accommodations", "restaurants", "thingstodo"};
+        for (String subcollectionName : subcollectionNames) {
+            database.collection(Constants.KEY_COLLECTION_USER_PLANS)
+                    .document(userEmail)
+                    .collection("plans")
+                    .document(planId)
+                    .collection(subcollectionName)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                document.getReference().delete();
+                            }
+                        } else {
+                            showToast("Failed to delete subcollections: " + task.getException().getMessage());
                         }
-                    } else {
-                        showToast("Failed to delete subcollections: " + task.getException().getMessage());
-                    }
-                });
+                    });
+        }
     }
 }
